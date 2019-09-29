@@ -17,9 +17,8 @@ class TmdbController extends Controller
                 if ($validator->fails()) {
                     return back()->withErrors($validator);
                 } else {
-                    //get api key from session/cookie
                     $apiKey = SessionController::getSessionData($req);
-                    $json = file_get_contents("https://api.themoviedb.org/3/search/multi?api_key=".$apiKey."&query=" . $req['query']);
+                    $json = file_get_contents(get_query_string($req, "MULTI", null, null, $req['query']));
                     $results = new ResultsMeta;
                     $results = json_decode($json, true);
                     $arr = $results['results'];
@@ -33,9 +32,9 @@ class TmdbController extends Controller
         }
     }
 
-    public function request(Request $req, $type, $id) {        
+    public function request(Request $req, $type, $id) {
         $apiKey = SessionController::getSessionData($req);
-        $json = file_get_contents("https://api.themoviedb.org/3/" . $type . "/" . $id . "?api_key=".$apiKey);
+        $json = file_get_contents(get_query_string($req, "SPECIFIC", $id, $type));
         $results = json_decode($json, true);
         if (array_key_exists('image_url', $results)) {
             $results['image_url'] = 'https://image.tmdb.org/t/p/original/'.$results['backdrop_path'];

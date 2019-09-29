@@ -5,11 +5,8 @@
         @foreach ($arr as $val)
         <div class="col-sm-3 py-2">      
             <div class="card h-100" style="overflow:hidden;">
-            <form method="GET" action="{{url('request')}}">
-                <input class="form-control" name="id" type="hidden" value="{{$val['id']}}">
-
-                <a href="query/{{$val['media_type']}}/{{$val['id']}}" class="stretched-link"></a>
-            </form>
+            <a href="query/{{$val['media_type']}}/{{$val['id']}}" class="stretched-link"></a>
+            
                 <div class="card-body">
                     <h4 class="card-title">
                         @isset($val['original_title'])
@@ -34,6 +31,8 @@
             </div>
         </div>
         @endforeach
+    </div>
+    <div class="container" name="modal-container">
     </div>
 </div>
 @stop

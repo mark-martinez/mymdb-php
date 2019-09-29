@@ -3,24 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
-
-class LoginController extends Controller
+class LoginController extends Controller 
 {
-    public function submit(Request $req) {
-        //validate with tmdb as well
-        $validator = validator($req->all(), [
-            'apiKey' => 'required|string|max:32|regex:/(^([a-zA-Z0-9]+)(\d+)?$)/u'
-        ]);
+    public function submit(Request $req, $type) {
+        switch($type) {
+            case "user":
+                $json = file_get_contents(get_query_string($req, "AUTHENTICATE_TOKEN"));
+                $results = json_decode($json, true);
+                $requestToken = $results['request_token'];
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator);
-        } else {
-            if (!SessionController::sessionExists($req, $req['apiKey'])){
-                SessionController::storeSessionData($req, $req['apiKey']);
-            }
-            return redirect('search');
+                return redirect(get_query_string($req, "TOKEN_APPROVAL", $requestToken));
+                break;
+            case "guest":
+                $json = file_get_contents(get_query_string($req, "AUTHENTICATE_GUEST_SESSION"));
+                $results = json_decode($json, true);
+                $sessionId = $results['guest_session_id'];
+                SessionController::createSession($req, $sessionId);
+
+                return redirect('search');
+                break;
+            default:
+                return abort(404);
+                break;
+
         }
     }
 }

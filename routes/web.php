@@ -19,4 +19,6 @@ Route::get('search', 'TmdbController@query');
 
 Route::get('query/{type}/{id}', 'TmdbController@request');
 
-Route::post('login', 'LoginController@submit');
+Route::get('login/{type}', 'LoginController@submit');
+
+Route::get('session', 'SessionController@createSession');

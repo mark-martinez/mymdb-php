@@ -10,6 +10,7 @@
         </header>
         <div id="main" class="justify-content-center">
             @yield('content')
+            @yield('script')
         </div>
         <footer id="footer" class="container-fluid">
             @include('includes.footer')
