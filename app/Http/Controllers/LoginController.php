@@ -19,6 +19,8 @@ class LoginController extends Controller
                 $json = file_get_contents(get_query_string($req, "AUTHENTICATE_GUEST_SESSION"));
                 $results = json_decode($json, true);
                 $sessionId = $results['guest_session_id'];
+
+                return redirect('/');
                 SessionController::createSession($req, $sessionId);
 
                 return redirect('search');
