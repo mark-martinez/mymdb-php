@@ -7,7 +7,7 @@
                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link disabled" href="#">Temp</a>
+                <a class="nav-link" href="https://www.themoviedb.org/">TMDb</a>
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0" method="GET" action="{{url('search')}}">

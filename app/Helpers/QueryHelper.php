@@ -14,7 +14,7 @@ function get_query_string(Request $req, $category, $id = null, $type = null, $qu
             return "https://www.themoviedb.org/authenticate/".$id."?redirect_to=".url('/session');
         case "AUTHENTICATE_USER_SESSION":
             return $base_url."authentication/session/new?api_key=".$apiKey;
-            case "AUTHENTICATE_GUEST_SESSION":
+        case "AUTHENTICATE_GUEST_SESSION":
             return $base_url."authentication/guest_session/new?api_key=".$apiKey;
         case "MULTI":
             return $base_url."search/multi?api_key=".$apiKey."&query=".$query;

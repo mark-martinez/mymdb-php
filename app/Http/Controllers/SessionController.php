@@ -7,27 +7,38 @@ use Illuminate\Http\Request;
 class SessionController extends Controller
 {
     static function createSession(Request $req) {
-        $json = file_get_contents(get_query_string($req, "AUTHENTICATE_USER_SESSION"));
-        $results = json_decode($json, true);
-        dd($results);
-        $req->session()->put('sessionId', $results['session_id']);
-        return redirect('/pages/search');
+        $json = TmdbController::authenticateSession($req);
+        //should parse bad codes
+        
+        if (isset($json['session_id'])) {
+            self::storeSessionData($req, $json['session_id']);
+        }
+        return view('pages/search');
     }
 
     static function getSessionData(Request $req) {
-        if ($req->session()->has('sessionId'))
-            return $req->session()->get('sessionId');
+        if ($req->session()->has('session_id'))
+            return $req->session()->get('session_id');
     }
 
     static function sessionExists(Request $req) {
-        return ($req->session()->has('sessionId'));
+        return ($req->session()->has('session_id'));
     }
 
     static function storeSessionData(Request $req, $sessionId) {
-        $req->session()->put('sessionId', $sessionId);
+        $req->session()->put('session_id', $sessionId);
     }
 
     static function deleteSessionData(Request $req) {
-        $req->session()->forget('sessionId');
+        $req->session()->forget('session_id');
+    }
+
+    static function storeRequestToken(Request $req, $token) {
+        $req->session()->put('request_token', $token);
+    }
+
+    static function getRequestToken(Request $req) {
+        if ($req->session()->has('request_token'))
+            return $req->session()->get('request_token');
     }
 }
