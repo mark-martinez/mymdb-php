@@ -2,52 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ResultsMeta;
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
+use App\Models\Services\TmdbService;
 
-class TmdbController extends Controller
-{
+class TmdbController extends Controller {
     public function query(Request $req) {
-        if (SessionController::getSessionData($req) != null) {
+        $tmdbService = new TmdbService();
+
+        if ($tmdbService->sessionExists($req)) {
             if ($req->exists('query')) {
                 $validator = validator($req->all(), [
                     'query' => 'required|string|max:32|regex:/(^([a-zA-Z0-9;: -]+)(\d+)?$)/u'
                 ]);
 
-                if ($validator->fails()) {
-                    return view('pages/landing')->withErrors($validator);
-                } else {
-                    $apiKey = SessionController::getSessionData($req);
-                    $json = file_get_contents(get_query_string($req, "MULTI", null, null, $req['query']));
-                    $results = new ResultsMeta; //change
-                    $results = json_decode($json, true);
-                    $arr = $results['results'];
-                    return view('pages/results', compact('arr'));
+                if (!$validator->fails()) {
+                    $results = $tmdbService->searchMulti($req['query']);
+                    return view('pages/results', compact('results'));
+                } else {                    
+                    return view('pages/login')->withErrors($validator);
                 }
             } else {
-                return view('pages/search');
+                return view('pages/search')->withErrors('You must submit input');
             }
         } else {
-            return view('pages/landing')->withErrors('You must sign-in as a User or a Guest');
+            return view('pages/login')->withErrors('You must sign-in as a User or a Guest');
         }
     }
 
     public function request(Request $req, $type, $id) {
-        $apiKey = SessionController::getSessionData($req);
-        $json = file_get_contents(get_query_string($req, "SPECIFIC", $id, $type));
-        $results = json_decode($json, true);
-        if (array_key_exists('image_url', $results)) {
-            $results['image_url'] = 'https://image.tmdb.org/t/p/original/'.$results['backdrop_path'];
-        }
-        return view('pages/modalListing', compact('results'));
-    }
+        $tmdbService = new TmdbService();
 
-    static function authenticateSession(Request $req) {
-        $client = new Client();
-        $response = $client->post(get_query_string($req, "AUTHENTICATE_USER_SESSION"), [
-            'json'=>['request_token'=>SessionController::getRequestToken($req)]
-        ]);
-        return $json = json_decode($response->getBody()->getContents(), true);
+        if ($tmdbService->sessionExists($req)) {
+            $results = $tmdbService->getById($id, $type);
+            return view('pages/modalListing', compact('results'));
+        }
     }
 }

@@ -1,18 +1,24 @@
-<nav class="container-fluid navbar navbar-expand-lg navbar-light bg-light">
+<div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#sidebar-container" aria-controls="sidebar-container" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
     <a class="navbar-brand" href="/">MyMDB</a>
-    
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="https://www.themoviedb.org/">TMDb</a>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0" method="GET" action="{{url('search')}}">
-            <input class="form-control mr-sm-2" name="query" type="text" placeholder="Search" aria-label="Search">
+    <form class="form-inline my-2 my-lg-0 ml-auto mr-auto" method="GET" action="{{url('search')}}">
+        <input class="form-control input-large" name="query" type="text" placeholder="Search" aria-label="Search">
+        <div class="input-group-append">
             <button class="btn btn-out-like-success my-2 my-sm-0" type="Submit">Search</button>
-        </form>
+        </div>
+    </form>
+    <div class="btn-group">
+        <button class="btn btn-outline-dark btn-sm" type="button">
+            Username here
+        </button>
+        <button type="button" class="btn btn-lg btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <div class="dropdown-menu dropdown-primary dropdown-menu-right">
+            <button class="dropdown-item" type="button">Profile</button>
+            <button class="dropdown-item" type="button">Logout</button>
+        </div>
     </div>
-</nav>
+</div>

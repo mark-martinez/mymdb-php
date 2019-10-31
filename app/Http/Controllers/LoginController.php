@@ -3,32 +3,42 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Services\TmdbService;
 
-class LoginController extends Controller 
-{
+class LoginController extends Controller {
+    public function isLoggedIn(Request $req) {
+        $tmdbService = new TmdbService();
+        if ($tmdbService->sessionExists($req)) {
+            return view('pages/home');
+        } else {
+            return redirect('login');
+        }
+    }
+
     public function submit(Request $req, $type) {
+        $tmdbService = new TmdbService();
         switch($type) {
             case "user":
-                $json = file_get_contents(get_query_string($req, "AUTHENTICATE_TOKEN"));
-                $results = json_decode($json, true);
+                if (!$tmdbService->sessionExists($req)) {
+                    $tmdbService->createToken($req);
+                    return redirect('https://www.themoviedb.org/authenticate/'.$tmdbService->getRequestToken($req).
+                                    '?redirect_to='.url('/login/success'));
+                } else {
+                    return redirect('search');
+                }
                 
-                $requestToken = $results['request_token'];
-                SessionController::storeRequestToken($req, $requestToken);
-                
-                return redirect(get_query_string($req, "TOKEN_APPROVAL", $requestToken));
-                break;
             case "guest":
-                $json = file_get_contents(get_query_string($req, "AUTHENTICATE_GUEST_SESSION"));
-                $results = json_decode($json, true);
-                $sessionId = $results['guest_session_id'];
+                if (!$tmdbService->sessionExists($req)) {
+                    $tmdbService->createGuestSession($req);
+                }                
+                return redirect('login/success');
 
-                SessionController::storeSessionData($req, $sessionId);
-                return redirect('search');
-                break;
+            case "success":
+                $tmdbService->createSession($req);
+                return redirect('home');
+
             default:
                 return abort(404);
-                break;
-
         }
     }
 }

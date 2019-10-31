@@ -1,18 +1,13 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::get('/', 'LoginController@isLoggedIn');
 
-Route::get('/', function () {
-    return view('pages/landing');
+Route::get('login', function() {
+    return view('pages/login');
+});
+
+Route::get('home', function() {
+    return view('pages/home');
 });
 
 Route::get('search', 'TmdbController@query');
@@ -20,5 +15,3 @@ Route::get('search', 'TmdbController@query');
 Route::get('query/{type}/{id}', 'TmdbController@request');
 
 Route::get('login/{type}', 'LoginController@submit');
-
-Route::get('session', 'SessionController@createSession');
