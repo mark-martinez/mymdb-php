@@ -10,7 +10,7 @@
 
     <div class="row" id="body-row">
         <!-- sidebar -->
-        <div class="sidebar-collapsed d-none d-md-block" id="sidebar-container">
+        <div class="sidebar-expanded collapse show" id="sidebar-container">
             @include('includes.sidebar')
         <!-- sidebar -->
         </div>

@@ -7,23 +7,35 @@ class Results extends JsonModel {
     public $results;
     public $total_results;
     public $total_pages;
-    /**
-     * issues exists here where parent construct not called properly
-     * code works fine without parent and construct code moved here instead
-     * currently emits an empty object
-     */
-    
+
     function __construct(array $data) {
-        parent::__construct($data);
-    }
-    
-    /*
-    function __construct(array $data) {
+        //parent::__construct($data);
+        $this->results = [];
         foreach($data as $key => $val) {
-            if(property_exists(__CLASS__, $key)) {                
-                $this->$key = $val;
+            if(property_exists(get_class($this), $key)) {
+                //temp method
+                //$results should be the only array anyways
+                if (is_array($this->$key)) {
+                    $newResults = [];
+                    foreach($val as $listing) {
+                        //dd($listing);
+                        switch($listing['media_type']) {
+                            case 'movie':
+                                array_push($newResults, new Movie($listing));
+                                break;
+                            case 'tv':
+                                array_push($newResults, new TV($listing));
+                                break;
+                            case 'person':
+                                array_push($newResults, new Person($listing));
+                                break;
+                        }
+                    }
+                    $this->$key = $newResults;
+                } else {
+                    $this->$key = $val;
+                }
             } 
         }
     }
-    */
 }

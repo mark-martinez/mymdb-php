@@ -2,6 +2,7 @@
 
 namespace App\Models\Services;
 
+use App\Models\DataMappers\AccountMapper;
 use App\Models\DataMappers\TmdbMapper;
 use App\Models\DataMappers\MediaMapper;
 use App\Models\DomainObjects\Movie;
@@ -11,16 +12,16 @@ use App\Models\DomainObjects\TV;
 use Illuminate\Http\Request;
 
 class TmdbService {
-    public $mapper;
+    public $tmdbMapper, $mediaMapper, $accountMapper;
 
     function __construct() {
         //attemp connection to tmdb api first
-        $this->mapper = new TmdbMapper();
+        $this->tmdbMapper = new TmdbMapper();
     }
     
     //AUTHENTICATION
     public function createToken(Request $req) {
-        $req->session()->put('request_token', $this->mapper->createRequestToken());
+        $req->session()->put('request_token', $this->tmdbMapper->createRequestToken());
     }
 
     public function getRequestToken(Request $req) {
@@ -29,7 +30,7 @@ class TmdbService {
     }
 
     public function createSession(Request $req) {
-        $sessionId = $this->mapper->postSession($this->getRequestToken($req));
+        $sessionId = $this->tmdbMapper->postSession($this->getRequestToken($req));
         $req->session()->put('session_id', $sessionId);
     }
     
@@ -37,14 +38,18 @@ class TmdbService {
         return ($req->session()->has('session_id'));
     }
 
+    public static function removeSession(Request $req) {
+        $req->session()->forget('session_id');
+    }
+
     public function createGuestSession(Request $req) {
-        $req->session()->put('session_id', $this->mapper->postGuestSession());
+        $req->session()->put('session_id', $this->tmdbMapper->postGuestSession());
     }
     //AUTHENTICATION END
 
     //ACCOUNT
     public function getAccount() {
-
+        return new Account($this->accountMapper->getAccount());
     }
 
     public function getFavorites($mediaType) {
@@ -69,9 +74,9 @@ class TmdbService {
     //END ACCOUNT
 
     //QUERY
-    public function searchMulti($query) {
+    public function searchMulti($query, $page) {
         $mediaMapper = new MediaMapper();
-        $json = $mediaMapper->searchMulti($query);
+        $json = $mediaMapper->searchMulti($query, $page);
         return new Results($json);
     }
 
@@ -88,8 +93,10 @@ class TmdbService {
         }
     }
 
-    public function getTrending() {
-
+    public function getTrending($media_type = "all", $time_window = "day") {
+        $mediaMapper = new MediaMapper();
+        $json = $mediaMapper->getTrending($media_type, $time_window);
+        return new Results($json);
     }
 
     public function discover() {

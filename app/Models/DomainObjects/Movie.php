@@ -20,5 +20,6 @@ class Movie extends Listing {
     function __construct($data) {
         parent::__construct($data);
         $this->mediaType = "movie";
+        $this->backdrop_path = "http://image.tmdb.org/t/p/w300".$this->backdrop_path;
     }
 }

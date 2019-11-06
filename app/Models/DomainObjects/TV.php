@@ -19,5 +19,6 @@ class TV extends Listing {
     function __construct($data) {
         parent::__construct($data);
         $this->mediaType = "tv";
+        $this->backdrop_path = "http://image.tmdb.org/t/p/w300".$this->backdrop_path;
     }
 }

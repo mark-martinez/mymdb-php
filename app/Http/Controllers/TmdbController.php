@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Services\TmdbService;
 
 class TmdbController extends Controller {
-    public function query(Request $req) {
+    public function query(Request $req, $page = 1) {
         $tmdbService = new TmdbService();
 
         if ($tmdbService->sessionExists($req)) {
@@ -16,7 +16,7 @@ class TmdbController extends Controller {
                 ]);
 
                 if (!$validator->fails()) {
-                    $results = $tmdbService->searchMulti($req['query']);
+                    $results = $tmdbService->searchMulti($req['query'], $page);
                     return view('pages/results', compact('results'));
                 } else {                    
                     return view('pages/login')->withErrors($validator);

@@ -1,5 +1,6 @@
 @extends('layouts.default')
 @section('content')
+
 <div class="container-fluid">
     <div class="card m-5 p-5">
         <div class="card-body container-fluid">

@@ -4,17 +4,41 @@ namespace App\Models\DataMappers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
-use App\Models\DomainObjects;
 
 class MediaMapper extends Mapper {
-    public function searchMulti($query) {
-        $json = file_get_contents($this->getBaseUrl()."search/multi?api_key=".$this->getApiKey()
-                                ."&query=".$query);
-        return json_decode($json, true);
+    public function searchMulti($query, $page = 1) {
+        $client = new Client();
+        $response = $client->request('GET', $this->getBaseUrl().$this->getMultiSearch(), [
+            'query' => [
+                'api_key' => $this->getApiKey(),
+                'query' => $query
+            ]
+        ]);
+        $body = $response->getBody()->getContents();
+        return json_decode($body, true);
     }
 
     public function getById($id, $type) {
-        $json = file_get_contents($this->getBaseUrl().$type."/".$id."?api_key=".$this->getApiKey());
-        return json_decode($json, true);
+        $client = new Client();
+        $response = $client->request('GET', $this->getBaseUrl().$type."/".$id, [
+            'query' => [
+                'api_key' => $this->getApiKey()
+            ]
+        ]);
+        
+        $body = $response->getBody()->getContents();
+        return json_decode($body, true);
+    }
+
+    public function getTrending($media_type = "all", $time_window = "day") {
+        $client = new Client();
+        $response = $client->request('GET', $this->getBaseUrl()."trending/".$media_type."/".$time_window, [
+            'query' => [
+                'api_key' => $this->getApiKey()
+            ]
+        ]);
+
+        $body = $response->getBody()->getContents();
+        return json_decode($body, true);
     }
 }

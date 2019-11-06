@@ -4,21 +4,21 @@
     <h3 class="">Page {{ $results->page }} of {{ $results->total_pages }}</h3>
     <div class="card-deck mb-3">
         @foreach ($results->results as $val)
-        <div class="col-sm-3 py-2">      
+        <div class="col-sm-3 py-2">
             <div class="card h-100" style="overflow:hidden;">
-            <a href="query/{{$val['media_type']}}/{{$val['id']}}" class="stretched-link"></a>
+            <a href="search/{{$val->mediaType}}/{{$val->id}}" class="stretched-link"></a>
             
                 <div class="card-body">
                     <h4 class="card-title">
-                        @isset($val['original_title'])
-                            {{ $val['original_title'] }}
+                        @isset($val->original_title)
+                            {{ $val->original_title }}
                         @endisset
-                        @isset($val['name'])
-                            {{ $val['name'] }}
+                        @isset($val->name)
+                            {{ $val->name }}
                         @endisset
                     </h4>
                     <h6 class="card-subtitle mb-2 text-muted">
-                        {{ $val['media_type'] }}
+                        {{ $val->mediaType }}
                     </h6>
                 </div>
                 <div class="card-footer">

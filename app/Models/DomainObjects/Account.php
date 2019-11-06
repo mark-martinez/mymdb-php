@@ -3,11 +3,11 @@
 namespace App\Models\DomainObjects;
 
 class Account extends JsonModel {
-    private $avatar;
-    private $id;
-    private $name;
-    private $includeAdult;
-    private $userName;
+    public $avatar;
+    public $id;
+    public $name;
+    public $includeAdult;
+    public $userName;
 
     public function getAvatar() {
         return $this->avatar;

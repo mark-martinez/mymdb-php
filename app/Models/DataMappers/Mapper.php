@@ -13,4 +13,10 @@ class Mapper {
     public function getApiKey() {
         return $this->apiKey;
     }
+
+    public function getMultiSearch() {
+        return "search/multi";
+    }
+
+    
 }

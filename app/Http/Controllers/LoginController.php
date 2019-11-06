@@ -9,7 +9,7 @@ class LoginController extends Controller {
     public function isLoggedIn(Request $req) {
         $tmdbService = new TmdbService();
         if ($tmdbService->sessionExists($req)) {
-            return view('pages/home');
+            return redirect('home');
         } else {
             return redirect('login');
         }
@@ -31,7 +31,7 @@ class LoginController extends Controller {
                 if (!$tmdbService->sessionExists($req)) {
                     $tmdbService->createGuestSession($req);
                 }                
-                return redirect('login/success');
+                return redirect('home');
 
             case "success":
                 $tmdbService->createSession($req);
@@ -39,6 +39,17 @@ class LoginController extends Controller {
 
             default:
                 return abort(404);
+        }
+    }
+
+    public function logout(Request $req) {
+        $tmdbService = new TmdbService();
+
+        if ($tmdbService->sessionExists($req)) {
+             $tmdbService->removeSession($req);
+             return redirect('/');
+        } else {
+            return abort(404);
         }
     }
 }

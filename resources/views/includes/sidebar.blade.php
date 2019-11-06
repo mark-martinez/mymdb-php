@@ -1,9 +1,4 @@
-<ul class="list-group">
-    <button type="button" data-toggle="collapse" data-target="#sidebar-container" class="close" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    <!-- Menu with submenu -->
-    
+<ul class="list-group">    
     <a href="{{url('watchlist')}}" class="bg-dark list-group-item list-group-item-action">
         <div class="d-flex w-100 justify-content-start align-items-center">
             <span class="menu-collapsed">Watchlist</span>    
@@ -19,4 +14,4 @@
             <span class="menu-collapsed">TMDb</span>
         </div>
     </a>
-</ul><!-- List Group END-->
+</ul>

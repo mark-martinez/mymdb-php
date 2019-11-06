@@ -9,20 +9,24 @@
                 <a href="{{url('recommended')}}" class="text-muted">See More</a>
             </div>
         <hr>
+        </div>        
+        <div class="p-2" id="section-trending">
+            <h3>Trending</h3>
+            <div class="card-deck">
+                @foreach ($trendingResults->results as $val)
+                    @include('components.cardCompact', array('val'=>$val))
+                @endforeach
+            </div>            
+            <div class="mt-md-3">
+                <a href="{{url('trending')}}" class="text-muted">See More</a>
+            </div>
+        <hr>
         </div>
         <div class="p-2" id="section-watchlist">
             <h3>Watchlist</h3>
             {{-- foreach card here --}}
             <div class="mt-md-3">
                 <a href="{{url('watchlist')}}" class="text-muted">See More</a>
-            </div>
-        <hr>
-        </div>
-        <div class="p-2" id="section-trending">
-            <h3>Trending</h3>
-            {{-- foreach card here --}}
-            <div class="mt-md-3">
-                <a href="{{url('trending')}}" class="text-muted">See More</a>
             </div>
         <hr>
         </div>

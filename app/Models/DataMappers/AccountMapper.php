@@ -2,14 +2,17 @@
 
 namespace App\Models\DataMappers;
 
+use GuzzleHttp\Client;
+
 class AccountMapper extends Mapper {
-    private $account;
-
-    protected function __construct(Account $account) {
-        $this->account = $account;
-    }
-
     public function getAccount() {
-        //call api https://api.themoviedb.org/3/account?api_key=<<api_key>>
+        $client = new Client();
+        $response = $client->request('GET', $this->getBaseUrl().'account', [
+            'query' => [
+                'api_key' => $this->getApiKey()
+            ]
+        ]);
+        $body = $response->getBody()->getContents();
+        return json_decode($body, true);
     }
 }

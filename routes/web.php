@@ -6,12 +6,12 @@ Route::get('login', function() {
     return view('pages/login');
 });
 
-Route::get('home', function() {
-    return view('pages/home');
-});
+Route::get('logout', 'LoginController@logout');
+
+Route::get('home', 'HomeController@render');
 
 Route::get('search', 'TmdbController@query');
 
-Route::get('query/{type}/{id}', 'TmdbController@request');
+Route::get('search/{type}/{id}', 'TmdbController@request');
 
 Route::get('login/{type}', 'LoginController@submit');

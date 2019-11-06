@@ -1,5 +1,5 @@
 <div class="collapse navbar-collapse" id="navbarNavDropdown">
-    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#sidebar-container" aria-controls="sidebar-container" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggle navbar-toggle-right custom-toggler" type="button" data-toggle="collapse" data-target="#sidebar-container" aria-controls="sidebar-container" aria-expanded="true" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="/">MyMDB</a>
@@ -17,8 +17,8 @@
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <div class="dropdown-menu dropdown-primary dropdown-menu-right">
-            <button class="dropdown-item" type="button">Profile</button>
-            <button class="dropdown-item" type="button">Logout</button>
+            <a href="#" class="btn btn-default dropdown-item">Profile</a>
+            <a href="/logout" class="btn btn-default dropdown-item">Logout</a>
         </div>
     </div>
 </div>
